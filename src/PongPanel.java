@@ -4,30 +4,27 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.security.Key;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PongPanel extends JPanel implements KeyListener, ActionListener {
 
-    private int player1X;
-    private int player2X;
+    private final int player1X;
+    private final int player2X;
     private int player1Y;
     private int player2Y;
-    private Timer timer;
-    private int delay;
+    private final Timer timer;
     private boolean play;
     private final Set<Integer> heldKeys;
 
     PongPanel() {
-        heldKeys = new HashSet<Integer>();
+        heldKeys = new HashSet<>();
         play = false;
         player1X = 10;
         player2X = 680;
         player1Y = 240;
         player2Y = 240;
-        delay = 8;
+        int delay = 8;
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -36,6 +33,7 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     }
 
     public void paint(Graphics g) {
+        requestFocus(true); // this ensures that the keyListener will work every time you run the program
         //background color
         g.setColor(Color.black);
         g.fillRect(1,1,692,592);
