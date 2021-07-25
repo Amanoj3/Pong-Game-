@@ -16,14 +16,27 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     private final Timer timer;
     private boolean play;
     private final Set<Integer> heldKeys;
+    private int ballX;
+    private int ballY;
+    private double ballXdir;
+    private double ballYdir;
 
     PongPanel() {
         heldKeys = new HashSet<>();
         play = false;
+
+        //paddle coordinates
         player1X = 10;
         player2X = 680;
         player1Y = 240;
         player2Y = 240;
+
+        //ball info
+        ballX = 15;
+        ballY = 240;
+        ballXdir = 1;
+        ballYdir = -2;
+
         int delay = 8;
         addKeyListener(this);
         setFocusable(true);
@@ -50,6 +63,10 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.red);
         g.fillRect(player2X,player2Y,5,100);
 
+        //ball
+        g.setColor(Color.orange);
+        g.fillOval(ballX,ballY,20,20);
+
         g.dispose();
     }
 
@@ -57,7 +74,11 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         timer.start();
         if (play) {
-
+            ballX += ballXdir;
+            ballY += ballYdir;
+            if (ballY < 0 || ballY > 540) {
+                ballYdir = -ballYdir;
+            }
         }
         repaint();
     }
