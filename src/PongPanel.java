@@ -6,6 +6,8 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.security.Key;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class PongPanel extends JPanel implements KeyListener, ActionListener {
 
@@ -16,10 +18,10 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     private Timer timer;
     private int delay;
     private boolean play;
-    private ArrayList<KeyEvent> heldKeys;
+    private final Set<Integer> heldKeys;
 
     PongPanel() {
-        heldKeys = new ArrayList<KeyEvent>();
+        heldKeys = new HashSet<Integer>();
         play = false;
         player1X = 10;
         player2X = 680;
@@ -64,13 +66,13 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
 
     @Override
     public void keyTyped(KeyEvent e) {
-
     }
 
     @Override
     public void keyPressed(KeyEvent e) {
-        //movements for paddle #2
-        if (e.getKeyCode() == KeyEvent.VK_UP) {
+        heldKeys.add(e.getKeyCode());
+        //paddle movements for paddle #2
+        if (heldKeys.contains(KeyEvent.VK_UP)) {
             if (player2Y <= 3){
                 player2Y = 3;
             }
@@ -78,7 +80,8 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
                 moveUp(true);
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+
+        if (heldKeys.contains(KeyEvent.VK_DOWN)) {
             if (player2Y >= 460) {
                 player2Y = 460;
             }
@@ -86,8 +89,8 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
                 moveDown(true);
             }
         }
-        //movements for paddle #1
-        if (e.getKeyCode() == KeyEvent.VK_W) {
+
+        if (heldKeys.contains(KeyEvent.VK_W)) {
             if (player1Y <=3) {
                 player1Y = 3;
             }
@@ -95,7 +98,8 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
                 moveUp(false);
             }
         }
-        if (e.getKeyCode() == KeyEvent.VK_S) {
+
+        if (heldKeys.contains(KeyEvent.VK_S)) {
             if (player1Y >= 460) {
                 player1Y = 460;
             }
@@ -103,6 +107,12 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
                 moveDown(false);
             }
         }
+
+    }
+
+    @Override
+    public void keyReleased(KeyEvent e) {
+        heldKeys.remove(e.getKeyCode());
     }
 
     void moveUp(boolean player2Moving) {
@@ -125,8 +135,4 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         }
     }
 
-    @Override
-    public void keyReleased(KeyEvent e) {
-
-    }
 }
