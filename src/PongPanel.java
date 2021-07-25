@@ -26,16 +26,16 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         play = false;
 
         //paddle coordinates
-        player1X = 10;
-        player2X = 680;
+        player1X = 10; // green paddle
+        player2X = 680; //red paddle
         player1Y = 240;
         player2Y = 240;
 
         //ball info
-        ballX = 15;
+        ballX = 55;
         ballY = 240;
-        ballXdir = 1;
-        ballYdir = -2;
+        ballXdir = 2;
+        ballYdir = -4;
 
         int delay = 8;
         addKeyListener(this);
@@ -74,9 +74,14 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     public void actionPerformed(ActionEvent e) {
         timer.start();
         if (play) {
+            if (new Rectangle(ballX, ballY, 20,20)
+                    .intersects(new Rectangle(player1X, player1Y,5,100)) || new Rectangle(ballX, ballY, 20,20)
+                    .intersects(new Rectangle(player2X, player2Y,5,100))) { // if the ball hits either paddle, it will bounce
+                ballXdir = -ballXdir;
+            }
             ballX += ballXdir;
             ballY += ballYdir;
-            if (ballY < 0 || ballY > 540) {
+            if (ballY < 0 || ballY > 540) { // the ball bounces when it hits the top or the bottom of the window
                 ballYdir = -ballYdir;
             }
         }
