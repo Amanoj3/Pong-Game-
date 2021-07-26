@@ -20,6 +20,9 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     private int ballY;
     private double ballXdir;
     private double ballYdir;
+    private int greenScore;
+    private int redScore;
+
 
     PongPanel() {
         heldKeys = new HashSet<>();
@@ -36,6 +39,10 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         ballY = 240;
         ballXdir = 2;
         ballYdir = -4;
+
+        //scores
+        greenScore = 0;
+        redScore = 0;
 
         int delay = 8;
         addKeyListener(this);
@@ -67,6 +74,15 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.orange);
         g.fillOval(ballX,ballY,20,20);
 
+        //green paddle's score
+        g.setColor(Color.blue);
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        g.drawString(String.valueOf(greenScore), 173, 20);
+
+        g.setColor(Color.blue);
+        g.setFont(new Font("Arial", Font.PLAIN, 20));
+        g.drawString(String.valueOf(redScore),519,20);
+
         g.dispose();
     }
 
@@ -83,6 +99,22 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
             ballY += ballYdir;
             if (ballY < 0 || ballY > 540) { // the ball bounces when it hits the top or the bottom of the window
                 ballYdir = -ballYdir;
+            }
+            if (ballX < 0) {
+                play = false;
+                ballX = 55;
+                ballY = 240;
+                ballXdir = -ballXdir;
+                ballYdir = -ballYdir;
+                redScore++;
+            }
+            if (ballX > 712) {
+                play = false;
+                ballX = 450;
+                ballY = 240;
+                ballXdir = -ballXdir;
+                ballYdir = -ballYdir;
+                greenScore++;
             }
         }
         repaint();
@@ -158,5 +190,4 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
             player1Y = player1Y + 20;
         }
     }
-
 }

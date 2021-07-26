@@ -1,6 +1,7 @@
 import javax.swing.*;
 
 public class GameFrame extends JFrame {
+
     GameFrame() {
         this.setBounds(10,10,710,600);
         this.setTitle("Pong");
@@ -10,4 +11,5 @@ public class GameFrame extends JFrame {
         PongPanel gamePanel = new PongPanel();
         this.add(gamePanel);
     }
+
 }
