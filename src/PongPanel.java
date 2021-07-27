@@ -40,14 +40,14 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         //ball info
         ballX = 55;
         ballY = 240;
-        ballXdir = 2;
-        ballYdir = -4;
+        ballXdir = 5;
+        ballYdir = -5;
 
         //scores
         greenScore = 0;
         redScore = 0;
 
-        int delay = 8;
+        int delay = 5;
         addKeyListener(this);
         setFocusable(true);
         setFocusTraversalKeysEnabled(false);
@@ -82,6 +82,11 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString(String.valueOf(greenScore), 173, 20);
 
+        //dot - use this as a reference to determine how the ball should bounce based on
+        // the part of the paddle it hits
+        //g.setColor(Color.red);
+        //g.drawLine(player1X,player1Y,10,10);
+
         g.setColor(Color.blue);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString(String.valueOf(redScore),519,20);
@@ -105,22 +110,60 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         timer.start();
         if (play) {
             if (new Rectangle(ballX, ballY, 20,20)
-                    .intersects(new Rectangle(player1X, player1Y,5,100)) || new Rectangle(ballX, ballY, 20,20)
-                    .intersects(new Rectangle(player2X, player2Y,5,100))) { // if the ball hits either paddle, it will bounce
-                /*if (new Rectangle(ballX, ballY, 20,20)
-                        .intersects(new Rectangle(player1X, player1Y,5,100))) {
-                    System.out.println("Ball is at: " + ballY);
-                    System.out.println("Collision at player1Y: " + player1Y);
+                    .intersects(new Rectangle(player1X, player1Y,5,100))) { // if the ball hits the green paddle
+                //check which part of the paddle gets hit (e.g., top, middle, bottom) and update the projection of the ball accordingly
+                if ((new Rectangle(ballX, ballY, 20,20) //topmost part
+                        .intersects(new Rectangle(player1X, player1Y,5,20)))) {
+                    ballYdir = -5;
                 }
-                if (new Rectangle(ballX, ballY, 20,20)
-                        .intersects(new Rectangle(player2X, player2Y,5,100))) {
-                    System.out.println("Ball is at: " + ballY);
-                    System.out.println("Collision at player2Y: " + player2Y);
-                }*/
+                else if ((new Rectangle(ballX, ballY, 20,20) //lower-top part
+                        .intersects(new Rectangle(player1X, player1Y+20,5,20)))) {
+                    ballYdir = -3;
+                }
+                else if ((new Rectangle(ballX, ballY, 20,20) //middle part
+                        .intersects(new Rectangle(player1X, player1Y+40,5,20)))) {
+                    ballYdir = 0;
+                }
+
+                else if ((new Rectangle(ballX, ballY, 20,20) //middle part
+                        .intersects(new Rectangle(player1X, player1Y+60,5,20)))) {
+                    ballYdir = 3;
+                }
+
+                else {
+                    ballYdir = 5;
+                }
                 ballXdir = -ballXdir;
-                ballXdir = ballXdir*1.1;
-                ballYdir = ballYdir*1.1;
             }
+
+            if (new Rectangle(ballX, ballY, 20,20) // if the ball hits the red paddle..
+                    .intersects(new Rectangle(player2X, player2Y,5,100))) {
+                /////
+                //check which part of the paddle gets hit (e.g., top, middle, bottom) and update the projection of the ball accordingly
+                if ((new Rectangle(ballX, ballY, 20,20) //topmost part
+                        .intersects(new Rectangle(player2X, player2Y,5,20)))) {
+                    ballYdir = -5;
+                }
+                else if ((new Rectangle(ballX, ballY, 20,20) //lower-top part
+                        .intersects(new Rectangle(player2X, player2Y+20,5,20)))) {
+                    ballYdir = -3;
+                }
+                else if ((new Rectangle(ballX, ballY, 20,20) //middle part
+                        .intersects(new Rectangle(player2X, player2Y+40,5,20)))) {
+                    ballYdir = 0;
+                }
+
+                else if ((new Rectangle(ballX, ballY, 20,20) //middle part
+                        .intersects(new Rectangle(player2X, player2Y+60,5,20)))) {
+                    ballYdir = 3;
+                }
+
+                else {
+                    ballYdir = 5;
+                }
+                ballXdir = -ballXdir;
+            }
+
             ballX += ballXdir;
             ballY += ballYdir;
             if (ballY < 0 || ballY > 540) { // the ball bounces when it hits the top or the bottom of the window
@@ -130,16 +173,16 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
                 play = false;
                 ballX = 55;
                 ballY = 240;
-                ballXdir = 2;
-                ballYdir = -4;
+                ballXdir = 5;
+                ballYdir = -5;
                 redScore++;
             }
             if (ballX > 712) {
                 play = false;
                 ballX = 450;
                 ballY = 240;
-                ballXdir = -2;
-                ballYdir = 4;
+                ballXdir = -5;
+                ballYdir = -5;
                 greenScore++;
             }
         }
@@ -154,6 +197,7 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_SPACE) {
             play = true;
+            return;
         }
         heldKeys.add(e.getKeyCode());
         //paddle movements for paddle #2
@@ -203,22 +247,22 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     void moveUp(boolean player2Moving) {
         if (player2Moving) {
             player2Y = player2Y - 20;
-            System.out.println("player2Y loc: " + player2Y);
+            //System.out.println("player2Y loc: " + player2Y);
         }
         else {
             player1Y = player1Y - 20;
-            System.out.println("player1Y loc: " + player1Y);
+            //System.out.println("player1Y loc: " + player1Y);
         }
     }
 
     void moveDown(boolean player2Moving) {
         if (player2Moving) {
             player2Y = player2Y + 20;
-            System.out.println("player2Y loc: " + player2Y);
+            //System.out.println("player2Y loc: " + player2Y);
         }
         else {
             player1Y = player1Y + 20;
-            System.out.println("player1Y loc: " + player1Y);
+            //System.out.println("player1Y loc: " + player1Y);
         }
     }
 }
