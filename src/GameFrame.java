@@ -1,4 +1,5 @@
 import javax.swing.*;
+import java.awt.*;
 
 public class GameFrame extends JFrame {
 
@@ -10,6 +11,8 @@ public class GameFrame extends JFrame {
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         PongPanel gamePanel = new PongPanel();
         this.add(gamePanel);
+        Image frameLogo = new ImageIcon("src/logo.png").getImage();
+        this.setIconImage(frameLogo);
     }
 
 }

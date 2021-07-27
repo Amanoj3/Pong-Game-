@@ -6,7 +6,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.HashSet;
 import java.util.Set;
-//TO DO (AS OF 7/27/21 12:40 AM - WORK ON THE PHYSICS BEHIND LETTING THE BALL BOUNCE)
+//TO DO (AS OF 7/27/21 9:23 AM) - WORK ON DIFFERENT DIRECTIONS THAT THE BALL COULD MOVE IN
 public class PongPanel extends JPanel implements KeyListener, ActionListener {
 
     private final int player1X;
@@ -22,7 +22,7 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     private double ballYdir;
     private int greenScore;
     private int redScore;
-    private String spaceToBegin;
+    private final String spaceToBegin;
 
 
     PongPanel() {
@@ -81,11 +81,6 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
         g.setColor(Color.blue);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
         g.drawString(String.valueOf(greenScore), 173, 20);
-
-        //dot - use this as a reference to determine how the ball should bounce based on
-        // the part of the paddle it hits
-        //g.setColor(Color.red);
-        //g.drawLine(player1X,player1Y,10,10);
 
         g.setColor(Color.blue);
         g.setFont(new Font("Arial", Font.PLAIN, 20));
@@ -247,22 +242,18 @@ public class PongPanel extends JPanel implements KeyListener, ActionListener {
     void moveUp(boolean player2Moving) {
         if (player2Moving) {
             player2Y = player2Y - 20;
-            //System.out.println("player2Y loc: " + player2Y);
         }
         else {
             player1Y = player1Y - 20;
-            //System.out.println("player1Y loc: " + player1Y);
         }
     }
 
     void moveDown(boolean player2Moving) {
         if (player2Moving) {
             player2Y = player2Y + 20;
-            //System.out.println("player2Y loc: " + player2Y);
         }
         else {
             player1Y = player1Y + 20;
-            //System.out.println("player1Y loc: " + player1Y);
         }
     }
 }
